@@ -75,6 +75,11 @@ public class UserDao {
 
     }
 
+    public int checkUser(int userIdx){
+        String checkUserQuery = "select exists(select userIdx from User where userIdx = ?)";
+        return this.jdbcTemplate.queryForObject(checkUserQuery, int.class, userIdx);
+    }
+
     public int modifyUserName(PatchUserReq patchUserReq){
         String modifyUserNameQuery = "update User set nickName = ? where userIdx = ? ";
         Object[] modifyUserNameParams = new Object[]{patchUserReq.getNickName(), patchUserReq.getUserIdx()};
@@ -82,7 +87,11 @@ public class UserDao {
         return this.jdbcTemplate.update(modifyUserNameQuery,modifyUserNameParams);
     }
 
+    public int modifyUserStatus(int userIdx){
+        String modifyUserStatusQuery = "update User set status = 'INACTIVE' where userIdx = ? ";
 
+        return this.jdbcTemplate.update(modifyUserStatusQuery, userIdx);
+    }
 
 
 }

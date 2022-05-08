@@ -69,4 +69,20 @@ public class UserService {
         }
     }
 
+    public void modifyUserStatus(int userIdx) throws BaseException {
+        // 유저 존재 확인
+        if(userProvider.checkUser(userIdx) == 0){
+            throw new BaseException(USERS_EMPTY_USER_ID);
+        }
+
+        try{
+            int result = userDao.modifyUserStatus(userIdx);
+            if(result == 0){
+                throw new BaseException(MODIFY_FAIL_USER_STATUS);
+            }
+        } catch(Exception exception){
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
 }

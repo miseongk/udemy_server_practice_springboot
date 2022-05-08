@@ -9,6 +9,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 import static com.example.demo.config.BaseResponseStatus.POST_USERS_EMPTY_EMAIL;
 import static com.example.demo.config.BaseResponseStatus.POST_USERS_INVALID_EMAIL;
 import static com.example.demo.utils.ValidationRegex.isRegexEmail;
@@ -75,6 +77,18 @@ public class UserController {
         }
     }
 
+//    @ResponseBody
+//    @GetMapping("") // (GET) 127.0.0.1:9000/users
+//    public BaseResponse<List> getUsers() {
+//        try{
+//
+//            List<GetUserRes> getUsersRes = userProvider.getUsers();
+//            return new BaseResponse<>(getUsersRes);
+//        } catch(BaseException exception){
+//            return new BaseResponse<>((exception.getStatus()));
+//        }
+//    }
+
     /**
      * 회원가입 API
      * [POST] /users
@@ -123,6 +137,23 @@ public class UserController {
 
             String result = "";
         return new BaseResponse<>(result);
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+    /**
+     * 유저삭제 API
+     * [PATCH] /users/:userIdx/status
+     * @return BaseResponse<String>
+     */
+    @PatchMapping("/{userIdx}/status") // (PATCH) 127.0.0.1:9000/users/:userIdx/status
+    public BaseResponse<String> modifyUserName(@PathVariable("userIdx") int userIdx){
+        try {
+            userService.modifyUserStatus(userIdx);
+
+            String result = "삭제되었습니다.";
+            return new BaseResponse<>(result);
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));
         }
