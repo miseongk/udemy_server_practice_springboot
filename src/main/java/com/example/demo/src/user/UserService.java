@@ -71,7 +71,7 @@ public class UserService {
 
     public void modifyUserStatus(int userIdx) throws BaseException {
         // 유저 존재 확인
-        if(userProvider.checkUser(userIdx) == 0){
+        if(userProvider.checkUserExist(userIdx) == 0){
             throw new BaseException(USERS_EMPTY_USER_ID);
         }
 
