@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static com.example.demo.config.BaseResponseStatus.INVALID_USER_JWT;
+
 
 @RestController
 @RequestMapping("/posts")
@@ -49,13 +51,17 @@ public class PostController {
     @PostMapping("")
     public BaseResponse<PostPostsRes> createPosts(@RequestBody PostPostsReq postPostsReq) {
         try{
+            int userIdxByJwt = jwtService.getUserIdx();
+            if(postPostsReq.getUserIdx() != userIdxByJwt) {
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
             if(postPostsReq.getContent().length() > 450) {
                 return new BaseResponse<>(BaseResponseStatus.POST_POSTS_INVALID_CONTENTS);
             }
             if(postPostsReq.getPostImgUrls().size() < 1) {
                 return new BaseResponse<>(BaseResponseStatus.POST_POSTS_EMPTY_IMGURL);
             }
-            PostPostsRes postPostsRes = postService.createPosts(postPostsReq.getUserIdx(), postPostsReq);
+            PostPostsRes postPostsRes = postService.createPosts(userIdxByJwt, postPostsReq);
             return new BaseResponse<>(postPostsRes);
         } catch(BaseException exception){
             return new BaseResponse<>((exception.getStatus()));

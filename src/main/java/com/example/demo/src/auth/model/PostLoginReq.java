@@ -1,4 +1,5 @@
-package com.example.demo.src.user.model;
+package com.example.demo.src.auth.model;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +10,8 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class PostUserRes {
-    private String jwt;
-    private int userIdx;
+public class PostLoginReq {
+    private String email;
+    private String pwd;
+
 }
